@@ -45,7 +45,7 @@
 
 	</dependencies>
 	<build>
-		<defaultGoal>deploy</defaultGoal>
+		<defaultGoal>clean verify deploy</defaultGoal>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
