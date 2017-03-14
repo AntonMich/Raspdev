@@ -80,8 +80,9 @@ public class ControllerServlet extends HttpServlet {
 		List<Device> listDevice = deviceDao.listAllDevices();
 		for(Device dev:listDevice){
 			System.out.println(dev);
-			SimplePin sPin=new SimplePin(dev.getGPIOnumber(), dev.getName());
-			sPin.startAction();
+			SimplePin sp=new SimplePin(0, null);
+			sp.onPin();
+			sp.offPin();
 		}
 		response.sendRedirect("list");
 		
