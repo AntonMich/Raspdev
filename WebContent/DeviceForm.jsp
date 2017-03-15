@@ -55,8 +55,14 @@
 				</select></td>
 			</tr>
 			<tr>
+				<th>Status:</th>
+				<td><input type="status" name="status" size="45"
+					value="<c:out value='${device.status}' />" />
+				</td> 
+			</tr>
+			<tr>
 				<td colspan="2" align="center"><input type="submit"
-					value="Save" /></td>
+					value="Save" /> </td>
 			</tr>
 		</table>
 		</form>

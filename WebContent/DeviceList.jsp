@@ -23,6 +23,7 @@
                 <th>Name</th>
                 <th>GPIO</th>
                 <th>Type</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
             <c:forEach var="device" items="${listDevice}">
@@ -31,6 +32,7 @@
                     <td><c:out value="${device.name}" /></td>
                     <td><c:out value="${device.GPIOnumber}" /></td>
                     <td><c:out value="${device.type}" /></td>
+                    <td><c:out value="${device.status}" /></td>
                     <td>
                     	<a href="edit?id=<c:out value='${device.id}' />">Edit</a>
                     	&nbsp;&nbsp;&nbsp;&nbsp;
@@ -39,7 +41,14 @@
                 </tr>
             </c:forEach>
         </table>
-        <a href="startscript?>">start</a>
+    </div>
+    <div align="center">
+    <table>
+    <tr>
+    <th><a href="startscript?>">start</a></th>
+    <th><a href="scena">scena</a></th>
+    </tr>
+    </table>	
     </div>	
 </body>
 </html>

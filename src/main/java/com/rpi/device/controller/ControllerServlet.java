@@ -67,6 +67,12 @@ public class ControllerServlet extends HttpServlet {
 			case "/startscript":
 				startDevice(request, response);
 				break;
+			case "/scena":
+				scenaDevice(request, response);
+				break;
+			case "/status":
+				changeStatus(request, response);
+				break;
 			default:
 				listDevice(request, response);
 				break;
@@ -79,17 +85,29 @@ public class ControllerServlet extends HttpServlet {
 	private void startDevice(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, InterruptedException {
 		List<Device> listDevice = deviceDao.listAllDevices();
 		for(Device dev:listDevice){
-			System.out.println(dev);
-			SimplePin sp=new SimplePin(0, null);
-			sp.onPin();
-			sp.offPin();
+			SimplePin.actionPin(dev);
+			Thread.sleep(1000);
 		}
 		response.sendRedirect("list");
 		
 		// TODO Auto-generated method stub
 		
 	}
-
+	private void changeStatus(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		List<Device> listDevice = deviceDao.listAllDevices();
+		request.setAttribute("listDevice", listDevice);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("Scena.jsp");
+		dispatcher.forward(request, response);
+	}
+	private void scenaDevice(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		List<Device> listDevice = deviceDao.listAllDevices();
+		request.setAttribute("listDevice", listDevice);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("Scena.jsp");
+		dispatcher.forward(request, response);
+	}
+	
 	private void listDevice(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 		List<Device> listDevice = deviceDao.listAllDevices();
@@ -119,8 +137,8 @@ public class ControllerServlet extends HttpServlet {
 		String name = request.getParameter("name");
 		int GPIOnumber = Integer.parseInt(request.getParameter("GPIOnumber"));
 		String type = request.getParameter("type");
-
-		Device newDevice = new Device(name, GPIOnumber, type);
+		int status = Integer.parseInt(request.getParameter("status"));
+		Device newDevice = new Device(name, GPIOnumber, type, status);
 		deviceDao.insertDevice(newDevice);
 		response.sendRedirect("list");
 	}
@@ -131,8 +149,8 @@ public class ControllerServlet extends HttpServlet {
 		String name = request.getParameter("name");
 		int GPIOnumber = Integer.parseInt(request.getParameter("GPIOnumber"));
 		String type = request.getParameter("type");
-
-		Device device = new Device(id, name, GPIOnumber, type);
+		int status = Integer.parseInt(request.getParameter("status"));
+		Device device = new Device(id, name, GPIOnumber, type, status);
 		deviceDao.updateDevice(device);
 		response.sendRedirect("list");
 	}

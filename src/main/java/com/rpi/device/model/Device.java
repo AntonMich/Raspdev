@@ -5,25 +5,29 @@ public class Device {
 	protected String name;
 	protected int GPIOnumber;
 	protected String type;
+	protected int status;
 	
 	public Device() {
 	}
 	public Device(int id) {
 		super();
+		this.id=id;
 		
 	}
-	public Device(int id, String name, int gPIOnumber, String type) {
+	public Device(int id, String name, int gPIOnumber, String type, int status) {
 		super();
 		this.id = id;
 		this.name = name;
 		GPIOnumber = gPIOnumber;
 		this.type = type;
+		this.status=status;
 	}
-	public Device(String name, int gPIOnumber, String type) {
+	public Device(String name, int gPIOnumber, String type, int status) {
 		super();
 		this.name = name;
 		GPIOnumber = gPIOnumber;
 		this.type = type;
+		this.status=status;
 	}
 	public int getId() {
 		return id;
@@ -48,6 +52,12 @@ public class Device {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	@Override
 	public String toString() {

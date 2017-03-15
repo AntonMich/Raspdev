@@ -40,14 +40,14 @@ public class DeviceDAO {
 	}
 	
 	public boolean insertDevice(Device device) throws SQLException {
-		String sql = "INSERT INTO device (name, GPIOnumber, type) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO device (name, GPIOnumber, type, status) VALUES (?, ?, ?, ?)";
 		connect();
 		
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 		statement.setString(1, device.getName());
 		statement.setInt(2, device.getGPIOnumber());
 		statement.setString(3, device.getType());
-		
+		statement.setInt(4, device.getStatus());
 		boolean rowInserted = statement.executeUpdate() > 0;
 		statement.close();
 		disconnect();
@@ -69,8 +69,9 @@ public class DeviceDAO {
 			String name = resultSet.getString("name");
 			int GPIOnumber = resultSet.getInt("GPIOnumber");
 			String type = resultSet.getString("type");
+			int status=resultSet.getInt("status");
 			
-			Device device = new Device(id, name, GPIOnumber, type);
+			Device device = new Device(id, name, GPIOnumber, type, status);
 			listDevice.add(device);
 		}
 		
@@ -83,8 +84,7 @@ public class DeviceDAO {
 	}
 	
 	public boolean deleteDevice(Device device) throws SQLException {
-		String sql = "DELETE FROM device where device_id = ?";
-		
+		String sql = "DELETE FROM device WHERE device_id = ?";
 		connect();
 		
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
@@ -97,7 +97,7 @@ public class DeviceDAO {
 	}
 	
 	public boolean updateDevice(Device device) throws SQLException {
-		String sql = "UPDATE device SET name = ?, GPIOnumber = ?, type = ?";
+		String sql = "UPDATE device SET name = ?, GPIOnumber = ?, type = ?, status = ?";
 		sql += " WHERE device_id = ?";
 		connect();
 		
@@ -105,11 +105,25 @@ public class DeviceDAO {
 		statement.setString(1, device.getName());
 		statement.setInt(2, device.getGPIOnumber());
 		statement.setString(3, device.getType());
-		statement.setInt(4, device.getId());
+		statement.setInt(4, device.getStatus());
+		statement.setInt(5, device.getId());
 		boolean rowUpdated = statement.executeUpdate() > 0;
 		statement.close();
 		disconnect();
 		return rowUpdated;		
+	}
+	public boolean changeStatus(int id, int status) throws SQLException {
+		String sql = "UPDATE device SET status= ?";
+		sql += " WHERE device_id = ?";
+		connect();
+		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+		statement.setInt(1, id);
+		statement.setInt(2, status);
+		boolean rowUpdated = statement.executeUpdate() > 0;
+		statement.close();
+		disconnect();
+		return rowUpdated;	
+		
 	}
 	
 	public Device getDevice(int id) throws SQLException {
@@ -127,8 +141,8 @@ public class DeviceDAO {
 			String name = resultSet.getString("name");
 			int GPIOnumber = resultSet.getInt("GPIOnumber");
 			String type = resultSet.getString("type");
-			
-			device = new Device(id, name, GPIOnumber, type);
+			int status=resultSet.getInt("status");
+			device = new Device(id, name, GPIOnumber, type, status);
 		}
 		
 		resultSet.close();

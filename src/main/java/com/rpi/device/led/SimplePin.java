@@ -6,30 +6,22 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
+import com.rpi.device.model.Device;
 
 public class SimplePin {
-	private int GPIO;
-	private String name;
 	private static GpioPinDigitalOutput pin;
-
-	public SimplePin(int gPIO, String name) {
-		super();
-		GPIO = gPIO;
-		this.name = name;
+	
+	public static void actionPin(Device device){
+		if (device.getStatus()==0){
+			getPin(device).low();
+		} else {getPin(device).high();}
 	}
-	public void onPin() throws InterruptedException{
-		getPin().high();
-		Thread.sleep(3000);
-	}
-	public void offPin() throws InterruptedException{
-		getPin().low();
-		Thread.sleep(3000);
-	}
-
-	public static GpioPinDigitalOutput getPin() {
+	
+	private static GpioPinDigitalOutput getPin(Device device) {
 		if (pin==null){
 			GpioController gpio=GpioFactory.getInstance();
-			pin=gpio.provisionDigitalOutputPin(RaspiPin.GPIO_17, "MyLed", PinState.LOW);
+			pin=gpio.provisionDigitalOutputPin(RaspiPin.getPinByAddress(device.getGPIOnumber()),
+					"MyLed", PinState.LOW);
 		}
 		return pin;
 	}
